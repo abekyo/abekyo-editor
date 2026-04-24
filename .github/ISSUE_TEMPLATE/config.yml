@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Question / discussion
+    url: https://github.com/discussions
+    about: For questions about usage or design discussions, please open a Discussion rather than an issue.

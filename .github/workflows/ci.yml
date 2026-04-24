@@ -1,0 +1,74 @@
+name: CI
+
+# What runs:
+#   - typecheck (tsc --noEmit)
+#   - tests     (Vitest, 108 cases)
+#   - i18n      (messages/*.json key parity)
+#   - build     (next build)
+#   - lint      (eslint) — see note below
+#
+# Lint note: there is currently a backlog of 22 pre-existing ESLint errors
+# (React hook rules in legacy components, `any` types, etc.). The lint step
+# below is *informational only* (continue-on-error) so the rest of CI still
+# blocks PRs until the backlog is cleaned up. Flip continue-on-error to false
+# once those errors are addressed; new code introducing fresh errors should
+# be caught at code review in the meantime.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# Cancel earlier runs on the same ref when a new commit lands. Saves CI minutes
+# on rapid pushes / force-pushes.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  ci:
+    name: typecheck / test / i18n / build / lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          # README declares Node 20+ as the supported range.
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      # All checks below use `if: always()` so a single failure does not mask
+      # the others. Each step's pass/fail is visible in the GitHub Actions UI.
+
+      - name: Type check (tsc --noEmit)
+        if: always()
+        run: npx tsc --noEmit
+
+      - name: Unit tests (Vitest)
+        if: always()
+        run: npm test
+
+      - name: i18n key parity
+        if: always()
+        run: npm run i18n:check
+
+      - name: Production build
+        if: always()
+        run: npm run build
+
+      - name: Lint (informational — see workflow comment)
+        if: always()
+        continue-on-error: true
+        run: npm run lint

@@ -1,0 +1,55 @@
+{
+  "name": "abekyo-editor",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT",
+  "author": "Opportunity Inc. <info@opport.jp>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abekyo/abekyo-editor.git"
+  },
+  "homepage": "https://github.com/abekyo/abekyo-editor#readme",
+  "bugs": {
+    "url": "https://github.com/abekyo/abekyo-editor/issues"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "i18n:check": "node scripts/check-i18n.mjs",
+    "remotion:studio": "remotion studio",
+    "remotion:render": "remotion render"
+  },
+  "dependencies": {
+    "@remotion/bundler": "^4.0.0",
+    "@remotion/cli": "^4.0.0",
+    "@remotion/player": "^4.0.0",
+    "@remotion/renderer": "^4.0.0",
+    "next": "16.0.3",
+    "next-intl": "^4.5.8",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "remotion": "^4.0.0",
+    "zustand": "^5.0.8"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@vitest/coverage-v8": "^4.1.5",
+    "eslint": "^9",
+    "eslint-config-next": "16.0.3",
+    "jsdom": "^29.0.2",
+    "tailwindcss": "^4",
+    "typescript": "^5",
+    "vitest": "^4.1.5"
+  }
+}
