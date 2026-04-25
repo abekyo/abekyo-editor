@@ -35,7 +35,7 @@ function applySecurityHeaders(response: NextResponse) {
   return response;
 }
 
-export function middleware(_request: NextRequest) {
+export function proxy(_request: NextRequest) {
   return applySecurityHeaders(NextResponse.next());
 }
 
