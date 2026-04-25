@@ -42,8 +42,10 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          # README declares Node 20+ as the supported range.
-          node-version: '20'
+          # README declares Node 20+ as the supported range; CI runs the
+          # latest LTS so the lockfile (generated with the matching npm 11)
+          # round-trips cleanly through `npm ci`.
+          node-version: '24'
           cache: 'npm'
 
       - name: Install dependencies
