@@ -126,7 +126,7 @@ export const ImageWithEffects: React.FC<ImageEffectsProps> = ({
   // durationInFramesのバリデーション（NaNや0を防ぐ）
   const safeDurationInFrames = durationInFrames && !isNaN(durationInFrames) && durationInFrames > 0 ? durationInFrames : 90; // デフォルト3秒（30fps）
 
-  let style: React.CSSProperties = {
+  const style: React.CSSProperties = {
     width: '100%',
     height: '100%',
     objectFit: 'cover', // contain → coverに変更（画像が画面全体を覆うように）

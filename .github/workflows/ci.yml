@@ -5,14 +5,7 @@ name: CI
 #   - tests     (Vitest, 108 cases)
 #   - i18n      (messages/*.json key parity)
 #   - build     (next build)
-#   - lint      (eslint) — see note below
-#
-# Lint note: there is currently a backlog of 22 pre-existing ESLint errors
-# (React hook rules in legacy components, `any` types, etc.). The lint step
-# below is *informational only* (continue-on-error) so the rest of CI still
-# blocks PRs until the backlog is cleaned up. Flip continue-on-error to false
-# once those errors are addressed; new code introducing fresh errors should
-# be caught at code review in the meantime.
+#   - lint      (eslint)
 
 on:
   push:
@@ -70,7 +63,6 @@ jobs:
         if: always()
         run: npm run build
 
-      - name: Lint (informational — see workflow comment)
+      - name: Lint
         if: always()
-        continue-on-error: true
         run: npm run lint
