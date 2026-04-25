@@ -1410,33 +1410,23 @@ export function ModernTimeline({
           />
         )}
 
-        {/* 空状態のCTA: クリップが1つもないときに表示 */}
+        {/* 空状態のCTA: クリップが1つもないときに表示（字幕・BGMトラックと統一スタイル） */}
         {clips.length === 0 && (
-          <button
+          <div
             onClick={(e) => {
               e.stopPropagation();
               if (!isAddingScene) onClipAdd();
             }}
-            disabled={isAddingScene}
-            className={`absolute top-8 bottom-2 left-2 right-2 rounded-lg border-2 border-dashed flex items-center justify-center transition-all z-10 ${
+            className={`absolute top-8 bottom-2 left-0 right-0 rounded-lg bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)] flex items-center justify-center transition-colors z-10 ${
               isAddingScene
-                ? 'border-indigo-400/60 text-indigo-300 bg-indigo-400/10 cursor-wait'
-                : 'border-[rgba(255,255,255,0.2)] text-gray-400 bg-[rgba(255,255,255,0.03)] hover:border-indigo-400 hover:text-indigo-400 hover:bg-indigo-400/10 cursor-pointer'
+                ? 'cursor-wait'
+                : 'cursor-pointer hover:bg-[rgba(255,255,255,0.08)]'
             }`}
           >
-            {isAddingScene ? (
-              <div className="flex flex-col items-center gap-1">
-                <span className="h-4 w-4 rounded-full border-2 border-indigo-300/40 border-t-indigo-300 animate-spin" />
-                <span className="text-xs">{t('timeline.addingScene')}</span>
-              </div>
-            ) : (
-              <div className="flex flex-col items-center gap-1.5">
-                <span className="text-2xl font-bold leading-none">+</span>
-                <span className="text-sm font-medium">{t('timeline.emptyClipsCta')}</span>
-                <span className="text-[10px] text-gray-500">{t('timeline.emptyClipsHint')}</span>
-              </div>
-            )}
-          </button>
+            <span className="text-xs text-gray-500">
+              {isAddingScene ? t('timeline.addingScene') : t('timeline.videoEmptyTrack')}
+            </span>
+          </div>
         )}
         </div>
 
