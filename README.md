@@ -49,7 +49,6 @@ Abekyo-editor/
 │   ├── VideoEditor.tsx          # Editor shell — orchestrates timeline, side panels, preview, and export
 │   ├── Onboarding.tsx           # First-visit guided tour (DOM target lookup via lib/onboardingTargets.ts)
 │   ├── LanguageSwitcher.tsx     # EN/JA toggle (cookie-based)
-│   ├── ProgressBar.tsx          # Top-of-page navigation progress indicator
 │   ├── PlotEditor.tsx           # Standalone plot text editor
 │   ├── VideoThumbnail.tsx       # Static clip thumbnail
 │   └── editor/                  # Sub-components extracted from VideoEditor.tsx (Phases 1–3)

@@ -49,7 +49,6 @@ Abekyo-editor/
 │   ├── VideoEditor.tsx          # エディタシェル — タイムライン、サイドパネル、プレビュー、書き出しを統括
 │   ├── Onboarding.tsx           # 初回訪問時のガイドツアー（lib/onboardingTargets.ts のIDで対象解決）
 │   ├── LanguageSwitcher.tsx     # EN/JAトグル（cookie方式）
-│   ├── ProgressBar.tsx          # ページ遷移の進捗バー
 │   ├── PlotEditor.tsx           # 単独のプロットテキストエディタ
 │   ├── VideoThumbnail.tsx       # クリップサムネイル
 │   └── editor/                  # VideoEditor.tsx から抽出したサブコンポーネント群（Phase 1–3）

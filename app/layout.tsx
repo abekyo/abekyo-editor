@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Noto_Sans_JP, Inter, Roboto, Poppins } from "next/font/google";
 import "./globals.css";
-import { ProgressBar } from "@/components/ProgressBar";
 import { NextIntlClientProvider } from 'next-intl';
 import { getLocale, getMessages } from 'next-intl/server';
 import { getBaseUrl, generateCanonicalUrl, generateHreflangUrls } from '@/lib/utils/metadata';
@@ -96,7 +95,6 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${notoSansJP.variable} ${inter.variable} ${roboto.variable} ${poppins.variable} antialiased`}
       >
         <NextIntlClientProvider locale={locale} messages={messages}>
-          <ProgressBar />
           {children}
         </NextIntlClientProvider>
       </body>
