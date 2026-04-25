@@ -92,6 +92,8 @@
       "addSceneShort": "Add scene",
       "addSceneTooltip": "Add scene",
       "addingScene": "Uploading…",
+      "emptyClipsCta": "Add your first scene",
+      "emptyClipsHint": "or press Cmd/Ctrl + N",
       "clipResizeLeftTooltip": "Drag left edge to change length",
       "clipResizeRightTooltip": "Drag right edge to change length",
       "subtitleResizeLeftTooltip": "Drag left edge to change start time",
