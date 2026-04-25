@@ -96,6 +96,7 @@ export function VideoEditor({
   // Playback toggle (lifted)
   const isPlaying = useEditorStore((s) => s.isPlaying);
   const setIsPlaying = useEditorStore((s) => s.setIsPlaying);
+  const playbackRate = useEditorStore((s) => s.playbackRate);
 
   // BGM playback config — still local; mirrored from useAppStore via props,
   // tied to BgmSettings sub-component. Deferred to Phase 3.
@@ -1209,6 +1210,15 @@ export function VideoEditor({
       bgmAudioRef.current.volume = Math.max(0, Math.min(1, bgmVolume));
     }
   }, [bgmVolume]);
+
+  // Keep BGM playback rate in sync with the editor's preview rate. The
+  // Remotion <Player> handles rate for the composition itself; BGM is an
+  // out-of-band <audio> element so we mirror it manually.
+  useEffect(() => {
+    if (bgmAudioRef.current) {
+      bgmAudioRef.current.playbackRate = playbackRate;
+    }
+  }, [playbackRate]);
 
   // シーク時にBGMも同期
   useEffect(() => {
@@ -2742,6 +2752,7 @@ export function VideoEditor({
                         durationInFrames={Math.max(1, Math.ceil(totalDuration * 30))}
                         controls={false}
                         loop
+                        playbackRate={playbackRate}
                         inputProps={playerInputProps}
                         style={{
                           width: '100%',

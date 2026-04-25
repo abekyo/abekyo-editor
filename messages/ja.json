@@ -50,6 +50,7 @@
       "redoTooltip": "やり直し (⌘⇧Z)",
       "stepBackOneFrameTooltip": "1フレーム戻る (←)",
       "stepForwardOneFrameTooltip": "1フレーム進む (→)",
+      "playbackRateTooltip": "プレビュー速度 — クリックで切替、右クリックで1xに戻す",
       "backToTop": "← トップに戻る",
       "backToTopTooltip": "トップに戻る",
       "saveDraft": "下書き保存",

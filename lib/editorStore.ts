@@ -25,10 +25,16 @@ import type { VideoClip } from '@/src/types';
 
 export type EditorPanel = 'none' | 'properties' | 'subtitle' | 'bgm';
 
+// Preview-only playback speeds. Server-side rendering always exports at 1x —
+// these are an editor convenience for scrubbing through the timeline faster
+// or hunting for fine timing issues at a slower rate.
+export const PLAYBACK_RATES = [0.5, 0.75, 1, 1.25, 1.5, 2] as const;
+
 interface EditorState {
   // --- Playback ---
   currentTime: number;
   isPlaying: boolean;
+  playbackRate: number;
 
   // --- Selection ---
   selectedClipIndices: number[];
@@ -56,6 +62,7 @@ interface EditorActions {
   // Playback
   setCurrentTime: (time: number) => void;
   setIsPlaying: (playing: boolean) => void;
+  setPlaybackRate: (rate: number) => void;
 
   // Selection
   setSelectedClipIndices: (indices: number[]) => void;
@@ -92,6 +99,7 @@ interface EditorActions {
 const INITIAL_STATE: EditorState = {
   currentTime: 0,
   isPlaying: false,
+  playbackRate: 1,
   selectedClipIndices: [],
   selectedSubtitleIds: [],
   history: [],
@@ -108,6 +116,7 @@ export const useEditorStore = create<EditorState & EditorActions>((set, get) => 
 
   setCurrentTime: (time) => set({ currentTime: time }),
   setIsPlaying: (playing) => set({ isPlaying: playing }),
+  setPlaybackRate: (rate) => set({ playbackRate: rate }),
 
   setSelectedClipIndices: (indices) => set({ selectedClipIndices: indices }),
   setSelectedSubtitleIds: (ids) => set({ selectedSubtitleIds: ids }),

@@ -50,6 +50,7 @@
       "redoTooltip": "Redo (⌘⇧Z)",
       "stepBackOneFrameTooltip": "Step back one frame (←)",
       "stepForwardOneFrameTooltip": "Step forward one frame (→)",
+      "playbackRateTooltip": "Preview speed — click to cycle, right-click to reset to 1x",
       "backToTop": "Back to top",
       "backToTopTooltip": "Back to top",
       "saveDraft": "Save draft",

@@ -9,7 +9,7 @@
 // player ref / clip state / navigation — not appropriate to lift here.
 
 import { useTranslations } from 'next-intl';
-import { useEditorStore } from '@/lib/editorStore';
+import { useEditorStore, PLAYBACK_RATES } from '@/lib/editorStore';
 import { TOUR_TARGETS } from '@/lib/onboardingTargets';
 
 export interface EditorToolbarProps {
@@ -53,9 +53,20 @@ export function EditorToolbar({
   const historyIndex = useEditorStore((s) => s.historyIndex);
   const historyLength = useEditorStore((s) => s.history.length);
   const isPlaying = useEditorStore((s) => s.isPlaying);
+  const playbackRate = useEditorStore((s) => s.playbackRate);
+  const setPlaybackRate = useEditorStore((s) => s.setPlaybackRate);
 
   const canUndo = historyIndex > 0;
   const canRedo = historyIndex < historyLength - 1;
+
+  const cyclePlaybackRate = () => {
+    const idx = PLAYBACK_RATES.indexOf(playbackRate as (typeof PLAYBACK_RATES)[number]);
+    const next = idx === -1 ? 1 : PLAYBACK_RATES[(idx + 1) % PLAYBACK_RATES.length];
+    setPlaybackRate(next);
+  };
+
+  const formatRate = (rate: number) =>
+    Number.isInteger(rate) ? `${rate}x` : `${rate.toString().replace(/\.?0+$/, '')}x`;
 
   return (
     <div className="flex items-center justify-between px-6 py-4 bg-[rgba(0,0,0,0.6)] backdrop-blur-xl border-b border-[rgba(255,255,255,0.1)]">
@@ -111,6 +122,23 @@ export function EditorToolbar({
             ⏭
           </button>
         </div>
+
+        {/* 倍速再生 — クリックで cycle、右クリックで 1x にリセット */}
+        <button
+          onClick={cyclePlaybackRate}
+          onContextMenu={(e) => {
+            e.preventDefault();
+            setPlaybackRate(1);
+          }}
+          className={`px-3 py-2 rounded-lg text-sm font-mono transition-all ${
+            playbackRate === 1
+              ? 'bg-[rgba(255,255,255,0.1)] text-gray-300 hover:bg-[rgba(255,255,255,0.2)]'
+              : 'bg-indigo-500/20 text-indigo-300 border border-indigo-400/40 hover:bg-indigo-500/30'
+          }`}
+          title={t('toolbar.playbackRateTooltip')}
+        >
+          {formatRate(playbackRate)}
+        </button>
       </div>
 
       {/* 右側: 同期警告、トップに戻る、下書き保存、エクスポート */}
