@@ -455,7 +455,10 @@ export function ModernTimeline({
     resizeStartTime.current = startTime;
     resizeStartDuration.current = clip.duration || 3;
     
-    // グローバルマウスイベントを設定
+    // クロージャは関数引数 clipIndex / handle を直接使う。React state
+    // (resizingClipIndex / resizeHandle) は setState 直後の同フェーズで
+    // 読むと未反映のため、以前はこの mouseMove ハンドラが常に null を
+    // 読んで早期 return していた。引数なら正しくキャプチャされる。
     const handleMouseMove = (e: MouseEvent) => {
       if (!timelineRef.current || !timelineContainerRef.current) {
         // リサイズが終了した場合、クリーンアップ
@@ -469,13 +472,7 @@ export function ModernTimeline({
         }
         return;
       }
-      
-      // resizingClipIndexとresizeHandleの最新値を取得するため、refを使用
-      const currentResizingIndex = resizingClipIndex;
-      const currentResizeHandle = resizeHandle;
-      
-      if (currentResizingIndex === null || currentResizeHandle === null) return;
-      
+
       const containerRect = timelineContainerRef.current.getBoundingClientRect();
       const timelineRect = timelineRef.current.getBoundingClientRect();
       // スクロール位置を考慮した相対位置
@@ -484,22 +481,24 @@ export function ModernTimeline({
       // タイムラインの表示範囲を3秒延長しているため、totalDuration + 3を基準に計算
       const extendedDuration = totalDuration + 3;
       const time = percentage * extendedDuration;
-      
-      const currentClip = clips[currentResizingIndex];
-      const clipStartTime = clipStartTimes[currentResizingIndex];
-      const currentDuration = currentClip.duration || 3;
-      
-      if (currentResizeHandle === 'right') {
+
+      // ドラッグ開始時に refs に保存しておいた original duration を基準に計算する。
+      // これによりクリップ更新後も「右端を固定したまま左端を動かす」幾何が安定する。
+      const originalStartTime = resizeStartTime.current;
+      const originalDuration = resizeStartDuration.current;
+
+      if (handle === 'right') {
         // 右端をリサイズ: 長さを変更
-        const newDuration = Math.max(0.1, Math.min(60, time - clipStartTime));
-        if (newDuration > 0.1 && newDuration !== currentDuration) {
-          onClipEdit(currentResizingIndex, { duration: newDuration });
+        const newDuration = Math.max(0.1, Math.min(60, time - originalStartTime));
+        if (newDuration > 0.1) {
+          onClipEdit(clipIndex, { duration: newDuration });
         }
       } else {
         // 左端をリサイズ: 長さを変更（開始位置は変更しない）
-        const newDuration = Math.max(0.1, Math.min(60, clipStartTime + currentDuration - time));
-        if (newDuration > 0.1 && newDuration !== currentDuration && time < clipStartTime + currentDuration) {
-          onClipEdit(currentResizingIndex, { duration: newDuration });
+        const rightEdge = originalStartTime + originalDuration;
+        const newDuration = Math.max(0.1, Math.min(60, rightEdge - time));
+        if (newDuration > 0.1 && time < rightEdge) {
+          onClipEdit(clipIndex, { duration: newDuration });
         }
       }
     };
