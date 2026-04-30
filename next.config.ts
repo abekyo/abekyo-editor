@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import path from "node:path";
 import createNextIntlPlugin from 'next-intl/plugin';
 
 const withNextIntl = createNextIntlPlugin('./i18n/request.ts');
@@ -28,7 +29,13 @@ const nextConfig: NextConfig = {
     }
     return config;
   },
-  turbopack: {},
+  turbopack: {
+    // Anchor Turbopack to this project directory. Without this, Turbopack
+    // can climb to a higher directory if it finds another lockfile there
+    // (e.g. ~/package-lock.json), which then triggers permission errors when
+    // it tries to traverse the user's home directory.
+    root: path.resolve(__dirname),
+  },
 };
 
 export default withNextIntl(nextConfig);
